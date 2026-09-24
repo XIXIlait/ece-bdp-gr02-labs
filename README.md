@@ -18,24 +18,20 @@ Labs for the ECE *Big Data Processing* course, fall 2026 (Adaltas).
 The labs run in the [Jupyter Docker Stacks](https://jupyter-docker-stacks.readthedocs.io/en/latest/index.html) `pyspark-notebook` image. The repository is mounted in the container so the notebooks are saved straight into the repo.
 
 ```bash
-docker run --name pyspark_notebook --rm \
-  --user root \
-  -e NB_UID="$(id -u)" \
-  -e NB_GID="$(id -g)" \
-  -e CHOWN_EXTRA="/home/jovyan/work" \
-  -e CHOWN_EXTRA_OPTS="-R" \
-  -v "$(pwd)":/home/jovyan/work \
-  --detach \
-  -p 8888:8888 -p 4040:4040 -p 4041:4041 \
-  quay.io/jupyter/pyspark-notebook
+./start-jupyter.sh
 ```
 
-Get the JupyterLab link with its token:
+The script starts the container and prints the JupyterLab link. The repo is in the `work/` folder. The Spark UI is available at <http://localhost:4040> while a session is running.
+
+Stop the container with:
 
 ```bash
-docker logs pyspark_notebook 2>&1 | grep "token="
+docker stop pyspark_notebook
 ```
 
-The Spark UI is available at <http://localhost:4040> while a session is running.
+Notes:
+
+- `PYTHONPATH` is set because the latest image does not expose `pyspark` to the Jupyter kernel.
+- The `CHOWN_EXTRA` options from the course instructions are not used: on macOS they fail on the `.git` folder and the container exits.
 
 The datasets (Project Gutenberg book, NYC TLC trip records) are downloaded by the notebooks themselves and are not committed (see `.gitignore`).
