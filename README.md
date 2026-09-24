@@ -1,4 +1,4 @@
-# ECE Big Data Processing — Labs (gr-02)
+# ECE Big Data Processing - Labs (gr-02)
 
 - Group: gr-02
 - project/lab member 1: Alexis Lainault, git username: XIXIlait
@@ -11,7 +11,7 @@ Labs for the ECE *Big Data Processing* course, fall 2026 (Adaltas).
 | Lab | Topic | Notebook |
 |---|---|---|
 | Lab 1 | Unstructured data analysis with RDDs (word count) | [lab1-rdd-word-count/word_count.ipynb](lab1-rdd-word-count/word_count.ipynb) |
-| Lab 2 | Structured data analysis with DataFrames and SparkSQL (NYC taxi) | [lab2-sparksql-dataframes/lab_sparksql_and_dataframes.ipynb](lab2-sparksql-dataframes/lab_sparksql_and_dataframes.ipynb) |
+| Lab 2 | Structured data analysis with DataFrames and SparkSQL (NYC taxi) | [lab2-sparksql-dataframes/lab_sparksql_and_dataframes.ipynb](lab2-sparksql-dataframes/lab_sparksql_and_dataframes.ipynb) (executed, [HTML export](lab2-sparksql-dataframes/lab_sparksql_and_dataframes.html)) |
 
 ## Running the notebooks
 
@@ -22,6 +22,12 @@ The labs run in the [Jupyter Docker Stacks](https://jupyter-docker-stacks.readth
 ```
 
 The script starts the container and prints the JupyterLab link. The repo is in the `work/` folder. The Spark UI is available at <http://localhost:4040> while a session is running.
+
+Without Docker (Java 17+ required):
+
+```bash
+pip install -r lab2-sparksql-dataframes/requirements.txt
+```
 
 Stop the container with:
 

@@ -12,6 +12,7 @@ venv/
 *.csv
 *.txt
 *.txt.utf-8
+!requirements.txt
 spark-warehouse/
 metastore_db/
 derby.log
