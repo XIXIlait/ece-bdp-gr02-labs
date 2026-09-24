@@ -1,0 +1,22 @@
+# Jupyter
+.ipynb_checkpoints/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Datasets downloaded by the notebooks (too big / re-downloadable)
+*.parquet
+*.csv
+*.txt
+*.txt.utf-8
+spark-warehouse/
+metastore_db/
+derby.log
+
+# OS / editors
+.DS_Store
+.vscode/
+.idea/
