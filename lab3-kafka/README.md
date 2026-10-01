@@ -34,6 +34,13 @@ Terminal 2:
 python producer.py
 ```
 
+Stop Kafka at the end, and start the same container again next time (`docker run` fails if the container `kafka` already exists):
+
+```bash
+docker stop kafka
+docker start kafka
+```
+
 The producer waits 10 ms between two lines (about 1 min 30 for the whole book), so the lines can be seen arriving in the consumer while the producer is running. The consumer stops after 10 seconds without new messages.
 
 To run the lab again from the start, delete `book_cleaned.txt` and recreate the topic (uncomment `delete_topics` in `admin.py`, run it, comment it again and run it once more).
