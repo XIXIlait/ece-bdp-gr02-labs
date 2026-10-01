@@ -12,6 +12,7 @@ Labs for the ECE *Big Data Processing* course, fall 2026 (Adaltas).
 |---|---|---|
 | Lab 1 | Unstructured data analysis with RDDs (word count) | [lab1-rdd-word-count/word_count.ipynb](lab1-rdd-word-count/word_count.ipynb) (executed, [HTML export](lab1-rdd-word-count/word_count.html)) |
 | Lab 2 | Structured data analysis with DataFrames and SparkSQL (NYC taxi) | [lab2-sparksql-dataframes/lab_sparksql_and_dataframes.ipynb](lab2-sparksql-dataframes/lab_sparksql_and_dataframes.ipynb) (executed, [HTML export](lab2-sparksql-dataframes/lab_sparksql_and_dataframes.html)) |
+| Lab 3 | Kafka producer and consumer on a Gutenberg book | [lab3-kafka/](lab3-kafka/README.md) (Python scripts, see its README) |
 
 ## Running the notebooks
 

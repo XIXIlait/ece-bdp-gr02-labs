@@ -13,6 +13,7 @@ venv/
 *.txt
 *.txt.utf-8
 !requirements.txt
+!lab3-kafka/book_cleaned.txt
 spark-warehouse/
 metastore_db/
 derby.log
