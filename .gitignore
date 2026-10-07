@@ -22,3 +22,8 @@ derby.log
 .DS_Store
 .vscode/
 .idea/
+
+# pywikibot runtime files
+throttle.ctrl
+apicache*/
+logs/
