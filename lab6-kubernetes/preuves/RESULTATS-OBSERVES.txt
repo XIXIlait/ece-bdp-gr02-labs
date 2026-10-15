@@ -1,0 +1,120 @@
+EXTRAITS DES SORTIES OBSERVEES PENDANT L'EXECUTION DU 15/10/2026
+
+Cette annexe reprend les sorties effectivement renvoyees par les commandes
+dans la session de travail. Ce n'est pas une transcription exhaustive.
+Les transcriptions PowerShell *.txt n'ont pas capture la sortie standard des
+programmes natifs dans cet environnement. Le CSV des requetes est, lui,
+un enregistrement direct du processus de surveillance. Le script a ete
+adapte pour enregistrer explicitement les sorties aux prochaines executions.
+
+1. ETAT DU CLUSTER APRES INITIALISATION
+NAME            STATUS   ROLES           VERSION   INTERNAL-IP
+tp-kubernetes   Ready    control-plane   v1.37.0   192.168.49.2
+
+minikube status:
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+
+METRIQUES
+NAMESPACE     NAME                                    CPU(cores)   MEMORY(bytes)
+kube-system   kube-apiserver-tp-kubernetes            61m          238Mi
+kube-system   etcd-tp-kubernetes                      37m          33Mi
+kube-system   kube-controller-manager-tp-kubernetes   24m          52Mi
+kube-system   metrics-server-768f9f6999-t7d7q         10m          15Mi
+kube-system   kube-scheduler-tp-kubernetes            9m           22Mi
+kube-system   coredns-559f6c778d-7vgvc                5m           11Mi
+default       kubernetes-bootcamp-5cc66bcc9b-qk5gt    4m           9Mi
+kube-system   storage-provisioner                     4m           8Mi
+kube-system   kindnet-s4sc4                           1m           7Mi
+kube-system   kube-proxy-fgv89                        1m           15Mi
+TOTAL                                                  152m         414Mi
+
+2. PREMIER POD ET TEST INTERNE
+POD_NAME=kubernetes-bootcamp-5cc66bcc9b-qk5gt
+READY=1/1 STATUS=Running IP=10.244.0.3
+Fichier /server.js : www.listen(8080,function () {
+Hello Kubernetes bootcamp! | Running on: kubernetes-bootcamp-5cc66bcc9b-qk5gt | v=1
+
+Test de l'IP du pod depuis Windows :
+curl: (28) Connection timed out after 4015 milliseconds
+
+Shell interactif ouvert plus tard sur le pod restaure :
+root@kubernetes-bootcamp-5cc66bcc9b-zpdhz:/#
+pwd -> /
+ls -> server.js present
+curl http://localhost:8080 -> reponse v=1
+exit -> session terminee avec code 0
+
+3. PREMIER SERVICE
+kubernetes-bootcamp   NodePort   10.104.10.120   <none>   8080:31867/TCP
+APP_URL=http://127.0.0.1:57658
+Reponse curl et navigateur : v=1, pod kubernetes-bootcamp-5cc66bcc9b-qk5gt.
+
+4. CINQ PODS PRETS (PREMIER ESSAI)
+kubernetes-bootcamp-5cc66bcc9b-c4fpr   1/1 Running
+kubernetes-bootcamp-5cc66bcc9b-jvggn   1/1 Running
+kubernetes-bootcamp-5cc66bcc9b-qk5gt   1/1 Running
+kubernetes-bootcamp-5cc66bcc9b-sq67l   1/1 Running
+kubernetes-bootcamp-5cc66bcc9b-xkrvl   1/1 Running
+Requetes : noms qk5gt, sq67l et jvggn observes.
+
+VERIFICATION SEPAREE DU RETOUR A DEUX PODS, TERMINEE AVEC CODE 0
+kubernetes-bootcamp-5cc66bcc9b-zk6v7   1/1 Running   10.244.0.13
+kubernetes-bootcamp-5cc66bcc9b-zpdhz   1/1 Running   10.244.0.12
+Aucun autre pod de l'application dans cette liste finale.
+
+5. MISES A JOUR
+deployment "kubernetes-bootcamp" successfully rolled out
+Hello Kubernetes bootcamp! | Running on: kubernetes-bootcamp-7d5c7d7dc4-xwvbd | v=2
+Hello Kubernetes bootcamp! | Running on: kubernetes-bootcamp-7d5c7d7dc4-h4n2h | v=2
+
+Tag v3 :
+kubernetes-bootcamp-795cf895df-wj926   0/1 ErrImagePull
+Image: jocatalin/kubernetes-bootcamp:v3
+State: Waiting
+Reason: ErrImagePull
+Les deux pods v2 restaient 1/1 Running et repondaient aux requetes.
+
+Premier rollback :
+deployment.apps/kubernetes-bootcamp rolled back
+Image : jocatalin/kubernetes-bootcamp:v2
+
+Historique avant retour a v1 : revisions 1, 3, 4.
+Revision 1 : gcr.io/google-samples/kubernetes-bootcamp:v1
+Rollback --to-revision=1 : successfully rolled out
+Image : gcr.io/google-samples/kubernetes-bootcamp:v1
+Historique final : revisions 3, 4, 5.
+Une reponse v2 transitoire encore observee immediatement apres convergence du Deployment.
+
+Enregistrement rolling-requests.csv : 23 requetes, 0 echec,
+11 reponses v1 et 12 reponses v2.
+
+6. MANIFESTS YAML, VERIFICATION FINALE DU 15/10/2026 A 16:56 (PARIS)
+deployment.apps/kubernetes-bootcamp   READY=3/3 UP-TO-DATE=3 AVAILABLE=3
+Image : gcr.io/google-samples/kubernetes-bootcamp:v1
+service/kubernetes-bootcamp   NodePort   10.110.180.12   8080:31505/TCP
+APP_URL=http://127.0.0.1:58048
+replicaset.apps/kubernetes-bootcamp-576b7cbb77   DESIRED=3 CURRENT=3 READY=3
+
+pod/kubernetes-bootcamp-576b7cbb77-cjr99   1/1 Running   10.244.0.19
+pod/kubernetes-bootcamp-576b7cbb77-cp2rb   1/1 Running   10.244.0.18
+pod/kubernetes-bootcamp-576b7cbb77-r2xlr   1/1 Running   10.244.0.17
+Deployment : readyReplicas=3, replicas=3, terminatingReplicas=0, updatedReplicas=3.
+
+20 requetes reussies : cjr99 (6), cp2rb (7), r2xlr (7).
+Navigateur : Hello Kubernetes bootcamp! | Running on: kubernetes-bootcamp-576b7cbb77-cjr99 | v=1
+
+7. NETTOYAGE EFFECTUE
+service "kubernetes-bootcamp" deleted from default namespace
+deployment.apps "kubernetes-bootcamp" deleted from default namespace
+Liste deployment,service,pods : seul service/kubernetes, ClusterIP=10.96.0.1, port=443/TCP.
+Aucun Deployment ni pod applicatif restant.
+* 1 node stopped.
+tp-kubernetes
+type: Control Plane
+host: Stopped
+kubelet: Stopped
+apiserver: Stopped
+kubeconfig: Stopped

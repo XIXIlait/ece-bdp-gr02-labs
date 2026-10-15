@@ -27,3 +27,14 @@ derby.log
 throttle.ctrl
 apicache*/
 logs/
+
+# Lab 6 submission evidence (small files, not downloaded datasets)
+!lab6-kubernetes/enonce.txt
+!lab6-kubernetes/preuves/*.txt
+!lab6-kubernetes/preuves/rolling-requests.csv
+
+# Lab 6 local tunnel state
+lab6-kubernetes/preuves/*.pid
+lab6-kubernetes/preuves/app-url.txt
+lab6-kubernetes/preuves/tunnel.stdout.txt
+lab6-kubernetes/preuves/tunnel.stderr.txt
